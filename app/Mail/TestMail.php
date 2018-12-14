@@ -28,6 +28,8 @@ class TestMail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->sender_mail)->markdown('emails.testmail');
+        // dd($this->sender_mail);
+        return $this->from('example@example.com',$this->sender_mail)->markdown('emails.testmail');
+        // return $this->from("$this->sender_mail",'Pyae')->markdown('emails.testmail');
     }
 }
