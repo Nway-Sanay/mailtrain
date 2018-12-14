@@ -23,15 +23,14 @@
 	                        <span class="text-muted" style="font-size: 11px;">{{$mail->body}}  </span> 
 	                        <span class="badge">{{$mail->send_date}}</span> 
 	                        <span class="pull-right">
-	                        	<span class="glyphicon glyphicon-paperclip"></span>
+								@if (!$mail->is_read)
+								  <span class='account-active badge'>Unread</span>
+								 @elseif($mail->is_read)
+								  <span class='account-active badge'>Read</span>
+								@endif	
 	                    	</span>
 	                        
 	                            	
-							@if (!$mail->is_read)
-							  <span class='account-active badge'>Unread</span>
-							 @elseif($mail->is_read)
-							  <span class='account-active badge'>Read</span>
-							@endif
 	                            
 	                    </a>
 

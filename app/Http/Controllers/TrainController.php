@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MailList;
 use App\User;
+use App\Mail\TestMail;
+use Mail;
 
 class TrainController extends Controller
 {
@@ -65,6 +67,8 @@ class TrainController extends Controller
         $send_date = \Carbon\Carbon::now()->toDateTimeString();
         $user_id = auth()->id();
 
+        $sender_mail = auth()->user()->email;
+
 
         if ($request->has('draft')) {          
 
@@ -81,6 +85,8 @@ class TrainController extends Controller
 
         if ($request->has('save')) {
             
+            // dd($sender_mail);
+
             $this->validate(request(),[
                 'email' => 'required|email|exists:users',
                 'body' => 'required',
@@ -92,6 +98,8 @@ class TrainController extends Controller
                 'body' => $body,
                 'user_id' => $user_id
             ]);
+
+            Mail::to($to_email)->send(new TestMail($sender_mail));
 
             return redirect()->to('/mail/inbox');
         }
