@@ -12,27 +12,26 @@ class TrainController extends Controller
 {
 
 	// public function __construct()
-	// { 	
+	// {
 	// 	$this->middleware('auth');
 	// }
 
     public function index()
-    {	
-        
+    {
+
 
     	return view('welcome');
-        
+
     }
 
     public function inbox()
-    {    	
+    {
 
         $user_id = auth()->id();
 
         $email = auth()->user()->email;
 
-        $mails = MailList::where('user_id',$user_id)->where('is_draft',0)
-                            ->orWhere([
+        $mails = MailList::where([
                                 ['to_email',$email],
                                 ['is_draft',0]
                             ])
@@ -40,7 +39,7 @@ class TrainController extends Controller
                             ->paginate(10)
                             ;
 
-        
+
 
         $drafts = MailList::where([
                                         ['user_id',$user_id],
@@ -53,14 +52,14 @@ class TrainController extends Controller
     }
 
     public function compose_page()
-    {       
+    {
         return view('layouts.mail.compose');
-        
+
     }
 
     public function compose(Request $request)
-    {       
-        
+    {
+
 
         $to_email = $request->get('email');
         $body = $request->get('body');
@@ -70,7 +69,7 @@ class TrainController extends Controller
         $sender_mail = auth()->user()->email;
 
 
-        if ($request->has('draft')) {          
+        if ($request->has('draft')) {
 
             $mail_list = MailList::create([
                 'send_date' => $send_date,
@@ -84,7 +83,7 @@ class TrainController extends Controller
         }
 
         if ($request->has('save')) {
-            
+
             // dd($sender_mail);
 
             $this->validate(request(),[
@@ -99,7 +98,7 @@ class TrainController extends Controller
                 'user_id' => $user_id
             ]);
 
-            Mail::to($to_email)->send(new TestMail($sender_mail));
+            // Mail::to($to_email)->send(new TestMail($sender_mail));
 
             return redirect()->to('/mail/inbox');
         }
@@ -108,16 +107,12 @@ class TrainController extends Controller
     }
 
     public function draft(Request $request)
-    {       
+    {
         $user_id = auth()->id();
 
         $email = auth()->user()->email;
 
         $mails = MailList::where([
-                                ['user_id',$user_id],
-                                ['is_draft',1]
-                            ])
-                            ->orWhere([
                                 ['to_email',$email],
                                 ['is_draft',0]
                             ])
@@ -149,6 +144,35 @@ class TrainController extends Controller
     public function draft_detail($id)
     {
         dd($id);
+    }
+
+    public function send_page($value='')
+    {
+
+      $user_id = auth()->id();
+
+      $email = auth()->user()->email;
+
+      $mails = MailList::where([
+                              ['to_email',$email],
+                              ['is_draft',0]
+                          ])
+                          ->orderBy('send_date','desc')
+                          ->paginate(10)
+                          ;
+
+      $send_mails = MailList:: where('user_id',$user_id)->where('is_draft',0)
+                           ->get();
+
+      $drafts = MailList::where([
+                                      ['user_id',$user_id],
+                                      ['is_draft',1]
+                                  ])
+                          ->get();
+
+      // dd($send_mail);
+
+      return view('layouts.mail.send_page',compact('mails','drafts','send_mails'));
     }
 
 }

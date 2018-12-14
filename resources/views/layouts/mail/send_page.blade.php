@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
-@section('title','Inbox')
+@section('title','Send')
 
-@section('header','Inbox')
+@section('header','Send')
 
 @section('content')
 
@@ -10,14 +10,14 @@
 
         <div class="tab-content">
             <div class="tab-pane fade in active" id="home">
-                @foreach($mails as $mail)
+                @foreach($send_mails as $mail)
                     <div class="list-group">
 
 						<a href="{{route('mail.read_detail',['id'=> $mail->id])}}" class="list-group-item read">
 
 	                        <span class="name" style="min-width: 120px;display: inline-block;">
 
-	                         {{$mail->user->email}}
+	                         {{$mail->to_email}}
 	                        </span>
 
 	                        <span class="text-muted" style="font-size: 11px;">{{$mail->body}}  </span>

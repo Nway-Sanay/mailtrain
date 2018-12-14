@@ -17,7 +17,7 @@
 // });
 
 Route::middleware(['admin.auth'])->group(function(){
-	Route::get('/','TrainController@index')->name('home');		
+	Route::get('/','TrainController@index')->name('home');
 	Route::prefix('mail')->name('mail.')->group(function()
 	{
 		Route::get('inbox','TrainController@inbox')->name('inbox');
@@ -26,6 +26,8 @@ Route::middleware(['admin.auth'])->group(function(){
 		Route::get('draft','TrainController@draft')->name('draft_page');
 		Route::get('draft_detail/{id}','TrainController@draft_detail');
 		Route::get('detail/{id}','TrainController@detail')->name('read_detail');
+		Route::get('send_page','TrainController@send_page')->name('send_page');
+
 	});
 	Route::get('/logout','AuthController@logout')->name('logout');
 });

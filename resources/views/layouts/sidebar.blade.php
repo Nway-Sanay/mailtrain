@@ -10,10 +10,10 @@
         <ul class="nav nav-pills nav-stacked">
             <li>
             	<a href="{{route('mail.inbox')}}">
-            		<span class="badge pull-right">{{$count = count($mails)}}</span> Inbox 
+            		<span class="badge pull-right">{{$count = count($mails)}}</span> Inbox
             	</a>
             </li>
-            <li><a href="#">Sent Mail</a></li>
+            <li><a href="{{route('mail.send_page')}}">Sent Mail</a></li>
             <li><a href="{{route('mail.draft_page')}}"><span class="badge pull-right">{{$count = count($drafts)}}</span>Drafts</a></li>
         </ul>
 
