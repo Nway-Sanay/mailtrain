@@ -13,7 +13,13 @@
 			<div class="col-sm-8">
 				<h2>Compose</h2>
 				<hr>
-				<form action="{{route('mail.compose')}}" method="POST">
+				<form 
+				@if($draft)
+				action="{{route('mail.compose',['id'=> $draft->id])}}"
+				@else
+				action="{{route('mail.compose',['id'=> null])}}"
+				@endif
+				method="POST" enctype="multipart/form-data">
 
 
 					@if ($errors->any())
@@ -31,15 +37,27 @@
 					{{csrf_field()}}
 				  <div class="form-group">
 				    <label for="email">To Email address</label>
-				    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+				    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email" 
+				    @if($draft)
+				    value="{{$draft->to_email}}"
+				    @endif
+				    >
+
 				  </div>
 				  <div class="form-group">
 				    <label for="body">Body</label>
-				    <textarea class="form-control" name='body' id="body" placeholder="type something...."></textarea>
+				    <textarea class="form-control" name='body' id="body" placeholder="type something....">@if($draft){{$draft->body}}@endif</textarea>
+				  </div>
+				  <div class="form-group">
+				    <input type="file" id="attach_file" name="attach_file">
 				  </div>
 				  <div class="form-check">
 				  	<button type="submit" name="save" class="btn btn-primary">Send</button>
+				  	@if($draft)
+				  	<a href="{{route('mail.draft_page')}}" class="btn btn-danger active" role="button" aria-pressed="true">Cancel</a>
+				  	@else
 				  	<button type="submit" name="draft" class="btn btn-warning">Save as draft</button>
+				  	@endif
 				  	<a href="{{route('mail.inbox')}}" class="btn btn-secondary active" role="button" aria-pressed="true">Return to inbox</a>
 				  </div>
 				</form>

@@ -39,8 +39,6 @@ class TrainController extends Controller
                             ->paginate(10)
                             ;
 
-
-
         $drafts = MailList::where([
                                         ['user_id',$user_id],
                                         ['is_draft',1]
@@ -53,14 +51,14 @@ class TrainController extends Controller
 
     public function compose_page()
     {
-        return view('layouts.mail.compose');
+        $draft = null;
+
+        return view('layouts.mail.compose',compact('draft'));
 
     }
 
-    public function compose(Request $request)
+    public function compose($id=null,Request $request)
     {
-
-
         $to_email = $request->get('email');
         $body = $request->get('body');
         $send_date = \Carbon\Carbon::now()->toDateTimeString();
@@ -68,6 +66,7 @@ class TrainController extends Controller
 
         $sender_mail = auth()->user()->email;
 
+        //save as a draft
 
         if ($request->has('draft')) {
 
@@ -82,28 +81,65 @@ class TrainController extends Controller
             return redirect()->to('/mail/draft');
         }
 
+        //send mail
+
+        $this->validate(request(),[
+            'email' => 'required|email|exists:users',
+            'body' => 'required',
+            'attach_file' => 'nullable|mimes:pdf|max:10000'
+        ]);
+
         if ($request->has('save')) {
 
-            // dd($sender_mail);
+            // send from a draft
 
-            $this->validate(request(),[
-                'email' => 'required|email|exists:users',
-                'body' => 'required',
-            ]);
+            if ($id) {
+                MailList::where('id',$id)->update([
+                                                    'send_date' => $send_date,
+                                                    'to_email' => $to_email,
+                                                    'body' => $body,
+                                                    'user_id' => $user_id,
+                                                    'is_draft'=> 0,
+                                                    ]);
+            }
+
+            $file_name_to_store=null;
+
+            if ($request->hasFile('attach_file')) {
+
+                $file_name_with_ext = $request->file('attach_file')->getClientOriginalName();
+
+                $file_name = pathinfo($file_name_with_ext,PATHINFO_FILENAME);
+
+                $file_ext =  $request->file('attach_file')->getClientOriginalExtension();
+
+                $file_name_to_store = $file_name."_".time().".".$file_ext;
+
+                $path = $request->file('attach_file')->storeAs('public/attach_files',$file_name_to_store);
+
+            }
 
             $mail_list = MailList::create([
-                'send_date' => $send_date,
-                'to_email' => $to_email,
-                'body' => $body,
-                'user_id' => $user_id
-            ]);
+                            'send_date' => $send_date,
+                            'to_email' => $to_email,
+                            'body' => $body,
+                            'user_id' => $user_id,
+                            'file_name' => $file_name_to_store,
+                        ]);
 
-            // Mail::to($to_email)->send(new TestMail($sender_mail));
+
+            $content = [
+                'sender_mail' => $sender_mail,
+                'attach_file' => $file_name_to_store,
+                'to_email' => $to_email,
+                'body' => $body
+            ];
+
+            Mail::to($to_email)->send(new TestMail($content));
 
             return redirect()->to('/mail/inbox');
+
         }
-
-
     }
 
     public function draft(Request $request)
@@ -122,6 +158,7 @@ class TrainController extends Controller
                                 ['is_draft',1],
                                 ['user_id',$user_id]
                             ])
+                            ->orderBy('send_date','desc')
                             ->paginate(10)
                             ;
 
@@ -143,10 +180,15 @@ class TrainController extends Controller
 
     public function draft_detail($id)
     {
-        dd($id);
+        $draft = MailList::where('id',$id)->first();
+
+        // dd($draft->body);
+
+        return view('layouts.mail.compose',compact('draft'));
+
     }
 
-    public function send_page($value='')
+    public function send_page()
     {
 
       $user_id = auth()->id();
@@ -156,23 +198,43 @@ class TrainController extends Controller
       $mails = MailList::where([
                               ['to_email',$email],
                               ['is_draft',0]
-                          ])
-                          ->orderBy('send_date','desc')
-                          ->paginate(10)
+                          ])->get()
+                          
+                          
                           ;
 
       $send_mails = MailList:: where('user_id',$user_id)->where('is_draft',0)
-                           ->get();
+                           ->orderBy('send_date','desc')->paginate(10);
 
       $drafts = MailList::where([
-                                      ['user_id',$user_id],
-                                      ['is_draft',1]
+                                ['user_id',$user_id],
+                                ['is_draft',1]
                                   ])
                           ->get();
 
       // dd($send_mail);
 
       return view('layouts.mail.send_page',compact('mails','drafts','send_mails'));
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->has('date_search')) {
+
+             $searches = MailList::where('send_date','like', '%'.$request->search.'%')
+                          ->get();
+
+            // dd($searches);
+
+            return view('layouts.mail.search',compact('searches'));
+
+        }
+
+        if ($request->has('search')) {
+            dd("search with textbox");
+        }
+
+        
     }
 
 }

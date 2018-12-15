@@ -22,11 +22,14 @@ Route::middleware(['admin.auth'])->group(function(){
 	{
 		Route::get('inbox','TrainController@inbox')->name('inbox');
 		Route::get('compose_page','TrainController@compose_page')->name('compose_page');
+		Route::get('compose/{id}','TrainController@compose')->name('compose');
 		Route::post('compose','TrainController@compose')->name('compose');
 		Route::get('draft','TrainController@draft')->name('draft_page');
-		Route::get('draft_detail/{id}','TrainController@draft_detail');
+		Route::get('draft_detail/{id}','TrainController@draft_detail')->name('draft_detail');
 		Route::get('detail/{id}','TrainController@detail')->name('read_detail');
 		Route::get('send_page','TrainController@send_page')->name('send_page');
+
+		Route::post('search','TrainController@search')->name('search');
 
 	});
 	Route::get('/logout','AuthController@logout')->name('logout');

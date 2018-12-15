@@ -15,7 +15,7 @@
                 <div class="list-group">
 
                     @foreach($drafts as $draft)
-                        <a href="#" class="list-group-item read">
+                        <a href="{{route('mail.draft_detail',['id'=> $draft->id])}}" class="list-group-item read">
                             
                             <span class="name" style="min-width: 120px;display: inline-block;"> To: {{$draft->to_email}} </span> 
                             

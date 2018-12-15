@@ -8,7 +8,7 @@ class MailList extends Model
 {
 
 	public $timestamps=false;
-	protected $fillable = ['send_date','to_email','body','is_read','is_spam','is_draft','user_id'];
+	protected $fillable = ['send_date','to_email','body','is_read','is_spam','is_draft','user_id','file_name'];
 
 	public function user()
 	{

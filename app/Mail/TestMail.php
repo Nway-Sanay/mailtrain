@@ -16,9 +16,9 @@ class TestMail extends Mailable
      *
      * @return void
      */
-    public function __construct($sender_mail)
+    public function __construct($content)
     {
-        $this->sender_mail = $sender_mail;
+        $this->content = $content;
     }
 
     /**
@@ -28,8 +28,13 @@ class TestMail extends Mailable
      */
     public function build()
     {
-        // dd($this->sender_mail);
-        return $this->from('example@example.com',$this->sender_mail)->markdown('emails.testmail');
-        // return $this->from("$this->sender_mail",'Pyae')->markdown('emails.testmail');
+
+        if ($this->content['attach_file']) {
+            # code...
+        $attach_path = public_path().'/storage/attach_files/'.$this->content['attach_file'];
+
+        return $this->from('example@example.com',$this->content['sender_mail'])->attach($attach_path)->markdown('emails.testmail')->with('content',$this->content);
+        
+        }else return $this->from('example@example.com',$this->content['sender_mail'])->markdown('emails.testmail')->with('content',$this->content);
     }
 }

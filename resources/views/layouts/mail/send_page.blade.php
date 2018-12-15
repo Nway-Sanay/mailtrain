@@ -45,7 +45,7 @@
 
     <div style="text-align: center;">
 
-    	{{$mails->links()}}
+    	{{$send_mails->links()}}
 
     </div>
 
