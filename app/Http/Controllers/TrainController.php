@@ -221,12 +221,16 @@ class TrainController extends Controller
     {
         if ($request->has('date_search')) {
 
-             $searches = MailList::where('send_date','like', '%'.$request->search.'%')
-                          ->get();
+             // $searches = MailList::where('send_date','like', '%'.$request->search.'%')
+             //              ->get();
 
-            // dd($searches);
+            $date =  \Carbon\Carbon::parse($request->search);
 
-            return view('layouts.mail.search',compact('searches'));
+            $date = $date->addDay(2);
+
+            dd($date." ".\Carbon\Carbon::parse($request->search));
+
+            // return view('layouts.mail.search',compact('searches'));
 
         }
 
