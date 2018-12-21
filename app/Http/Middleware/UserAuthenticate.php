@@ -17,7 +17,7 @@ class UserAuthenticate extends Middleware
 
         if(!Auth::check()){
 
-            return route('login');        
+            return route('login');
         }
 
 

@@ -11,15 +11,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<h2>Compose</h2>
+				<h2>News Letter</h2>
 				<hr>
-				<form 
-				@if($draft)
-				action="{{route('mail.compose',['id'=> $draft->id])}}"
-				@else
-				action="{{route('mail.compose')}}"
-				@endif
-				method="POST" enctype="multipart/form-data">
+				<form method="post" action="{{route('mail.pre_pdf')}}" enctype="multipart/form-data">
 
 
 					@if ($errors->any())
@@ -37,28 +31,20 @@
 					{{csrf_field()}}
 				  <div class="form-group">
 				    <label for="email">To Email address</label>
-				    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email" 
-				    @if($draft)
-				    value="{{$draft->to_email}}"
-				    @endif
-				    >
+				    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
 
 				  </div>
 				  <div class="form-group">
 				    <label for="body">Body</label>
-				    <textarea class="form-control" name='body' id="body" placeholder="type something....">@if($draft){{$draft->body}}@endif</textarea>
+				    <textarea class="form-control" name='body' id="body" placeholder="type something...."></textarea>
 				  </div>
 				  <div class="form-group">
-				    <input type="file" id="attach_file" name="attach_file">
+				    <input type="file" id="image" name="image">
 				  </div>
 				  <div class="form-check">
-				  	<button type="submit" name="save" class="btn btn-primary">Send</button>
-				  	@if($draft)
-				  	<a href="{{url()->previous()}}" class="btn btn-danger active" role="button" aria-pressed="true">Cancel</a>
-				  	@else
-				  	<button type="submit" name="draft" class="btn btn-warning">Save as draft</button>
-				  	@endif
-				  	<a href="{{route('mail.inbox')}}" class="btn btn-secondary active" role="button" aria-pressed="true">Return to inbox</a>
+				  	<button type="submit" name="save" class="btn btn-primary">Export as PDF</button>
+				  	
+				  	<a href="{{url()->previous()}}" class="btn btn-secondary active" role="button" aria-pressed="true">Back</a>
 				  </div>
 				</form>
 			</div>

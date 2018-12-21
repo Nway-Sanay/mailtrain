@@ -7,6 +7,7 @@ use App\MailList;
 use App\User;
 use App\Mail\TestMail;
 use Mail;
+use App\News_letter;
 
 class TrainController extends Controller
 {
@@ -24,6 +25,34 @@ class TrainController extends Controller
 
     }
 
+    public function mail_count()
+    {
+
+        $email = auth()->user()->email;
+
+        $mail_count = MailList::where([
+                                ['to_email',$email],
+                                ['is_draft',0]
+                            ])
+                            ->count();
+
+        return $mail_count;
+
+    }
+
+    public function draft_count()
+    {
+        $user_id = auth()->id();
+
+        $draft_count = MailList::where([
+                                        ['user_id',$user_id],
+                                        ['is_draft',1]
+                                    ])
+                            ->count();
+
+        return $draft_count;
+    }
+
     public function inbox()
     {
 
@@ -36,16 +65,19 @@ class TrainController extends Controller
                                 ['is_draft',0]
                             ])
                             ->orderBy('send_date','desc')
-                            ->paginate(10)
+                            // ->paginate(10)
+                            ->get()
                             ;
 
-        $drafts = MailList::where([
-                                        ['user_id',$user_id],
-                                        ['is_draft',1]
-                                    ])
-                            ->get();
+        $mail_count = $this->mail_count();
 
-    	return view('layouts.mail.inbox',compact('mails','drafts'));
+        $draft_count = $this->draft_count();
+
+        // dd($draft_count);
+
+        return $mails;
+
+    	// return view('layouts.mail.inbox',compact('mails','drafts','mail_count','draft_count'));
 
     }
 
@@ -57,7 +89,7 @@ class TrainController extends Controller
 
     }
 
-    public function compose($id=null,Request $request)
+    public function compose(Request $request)
     {
         $to_email = $request->get('email');
         $body = $request->get('body');
@@ -92,16 +124,17 @@ class TrainController extends Controller
         if ($request->has('save')) {
 
             // send from a draft
-
-            if ($id) {
-                MailList::where('id',$id)->update([
+            if ($request->id) {
+                $draft = MailList::where('id',$request->id)->update([
                                                     'send_date' => $send_date,
                                                     'to_email' => $to_email,
                                                     'body' => $body,
                                                     'user_id' => $user_id,
                                                     'is_draft'=> 0,
                                                     ]);
+
             }
+
 
             $file_name_to_store=null;
 
@@ -148,11 +181,6 @@ class TrainController extends Controller
 
         $email = auth()->user()->email;
 
-        $mails = MailList::where([
-                                ['to_email',$email],
-                                ['is_draft',0]
-                            ])
-                            ->get();
 
         $drafts = MailList::where([
                                 ['is_draft',1],
@@ -162,7 +190,11 @@ class TrainController extends Controller
                             ->paginate(10)
                             ;
 
-        return view('layouts.mail.draft',compact('drafts','mails'));
+        $mail_count = $this->mail_count();
+
+        $draft_count = $this->draft_count();
+
+        return view('layouts.mail.draft',compact('drafts','mails','mail_count','draft_count'));
 
     }
 
@@ -182,8 +214,6 @@ class TrainController extends Controller
     {
         $draft = MailList::where('id',$id)->first();
 
-        // dd($draft->body);
-
         return view('layouts.mail.compose',compact('draft'));
 
     }
@@ -195,50 +225,131 @@ class TrainController extends Controller
 
       $email = auth()->user()->email;
 
-      $mails = MailList::where([
-                              ['to_email',$email],
-                              ['is_draft',0]
-                          ])->get()
-                          
-                          
-                          ;
 
       $send_mails = MailList:: where('user_id',$user_id)->where('is_draft',0)
                            ->orderBy('send_date','desc')->paginate(10);
 
-      $drafts = MailList::where([
-                                ['user_id',$user_id],
-                                ['is_draft',1]
-                                  ])
-                          ->get();
 
-      // dd($send_mail);
+        $draft_count = $this->draft_count();
 
-      return view('layouts.mail.send_page',compact('mails','drafts','send_mails'));
+        $mail_count = $this->mail_count();
+
+      return view('layouts.mail.send_page',compact('mails','drafts','send_mails','mail_count','draft_count'));
     }
 
+
+    // Search
     public function search(Request $request)
     {
         if ($request->has('date_search')) {
 
-             // $searches = MailList::where('send_date','like', '%'.$request->search.'%')
-             //              ->get();
+            $this->validate(request(),[
+            'from_date_search' => 'required',
+            'to_date_search' => 'required'
+            ]);
 
-            $date =  \Carbon\Carbon::parse($request->search);
+             $searches = MailList::whereBetween('send_date',
+                                    [$request->from_date_search,
+                                    $request->to_date_search])
+                          ->get();
 
-            $date = $date->addDay(2);
+            // $date =  \Carbon\Carbon::parse($request->search);'like', '%'.$request->search.'%'
 
-            dd($date." ".\Carbon\Carbon::parse($request->search));
+            // $from_date = \Carbon\Carbon::parse($request->from_date_search);
+            // $to_date = \Carbon\Carbon::parse($request->to_date_search);
 
-            // return view('layouts.mail.search',compact('searches'));
+            // dd($searches);
+
+            return view('layouts.mail.search',compact('searches'));
 
         }
-
+        // textbox search
         if ($request->has('search')) {
-            dd("search with textbox");
+
+            $searches = MailList::where('to_email','like', '%'.$request->text_search.'%')
+                            ->orWhere('body','like', '%'.$request->text_search.'%')
+                          ->get();
+
+            return view('layouts.mail.search',compact('searches'));
+
         }
 
-        
     }
+
+    public function news_letter_page()
+    {
+        // dd('news_letter');
+
+        return view('layouts.mail.news_letter');
+    }
+
+    public function preview_pdf(Request $request)
+    {
+
+        $send_date = \Carbon\Carbon::now()->toDateTimeString();
+
+        $img_name_to_store=null;
+
+            if ($request->hasFile('image')) {
+
+                $img_name_with_ext = $request->file('image')->getClientOriginalName();
+
+                $img_name = pathinfo($img_name_with_ext,PATHINFO_FILENAME);
+
+                $img_ext =  $request->file('image')->getClientOriginalExtension();
+
+                $img_name_to_store = $img_name."_".time().".".$img_ext;
+
+                $path = $request->file('image')->storeAs('images',$img_name_to_store);
+
+            }
+
+        // $news_letter = News_letter::create([
+        //         'send_date' => $send_date,
+        //         'to_email' => $request->get('email'),
+        //         'body' => $request->get('body'),
+        //         'image' => $img_name_to_store
+        //     ]);
+
+
+        $to_email = $request->get('email');
+        $body = $request->get('body');
+        $image = $img_name_to_store;
+        // $image = \Storage::exists('images/'.$img_name_to_store);
+
+         // dd($image);
+
+        return view('layouts.mail.preview_pdf',compact('to_email','body','image'));
+    }
+
+    public function make_pdf(Request $request)
+    {
+        $to_email = $request->get('email');
+        $body = $request->get('body');
+        $image = $request->get('image');
+
+        $pdf = \PDF::loadView('layouts.mail.save_pdf', compact('to_email','body','image'));
+        return $pdf->download('invoice.pdf');
+
+        // dd('make');
+    }
+
+    public function get_image($image)
+    {
+
+        $path = storage_path().'/app/images/'.$image;
+
+        if(!File::exists($path)){
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file,200);
+        $response -> header("Content-Type" , 200);
+        return $response;
+    }
+
 
 }

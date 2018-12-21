@@ -30,4 +30,4 @@
 </p>
 @endif
 
-<p> <a href="{{route('mail.inbox')}}">back</a> </p>
+<p> <a href="{{url()->previous()}}">back</a> </p>

@@ -21,7 +21,8 @@
 	                        </span>
 
 	                        <span class="text-muted" style="font-size: 11px;">{{$mail->body}}  </span>
-	                        <span class="badge">{{$mail->send_date}}</span>
+	                        <span class="badge">{{\Carbon\Carbon::parse($mail->send_date)->diffForHumans()}}
+	                        </span>
 	                        <span class="pull-right">
 								@if (!$mail->is_read)
 								  <span class='account-active badge'>Unread</span>

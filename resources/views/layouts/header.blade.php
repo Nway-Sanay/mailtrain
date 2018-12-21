@@ -21,9 +21,12 @@
 	           <form action="{{route('mail.search')}}" method="post"> 
 				  <!-- <div class="row"> -->
 				  	{{csrf_field()}}
+
+				  	<!-- Searchbox -->
+
 				    <div class="col-xs-6 col-md-4 pull-right">
 				      <div class="input-group">
-				        <input type="text" class="form-control" placeholder="Search..." name="search" id="search"/>
+				        <input type="text" class="form-control" placeholder="Search with email..." name="text_search" id="search"/>
 				        <div class="input-group-btn">
 				          <button class="btn btn-primary" name="search" type="submit">
 				            <span class="glyphicon glyphicon-search"></span>
@@ -31,9 +34,18 @@
 				        </div>
 				      </div>
 				    </div>
-				    <div class="col-xs-6 col-md-4 pull-right">
+
+				    <!-- dateSearch -->
+				    <div class="col-xs-6 col-md-4 ">
+				      <label>From: </label>
 				      <div class="input-group">
-				        <input type="date" class="form-control" placeholder="Search..." name="search" id="search"/>
+				        <input type="date" class="form-control" name="from_date_search" id="from_date_search" required="" />
+				      </div>
+				    </div>
+				    <div class="col-xs-6 col-md-4">
+				      <label>To: </label>
+				      <div class="input-group">
+				        <input type="date" class="form-control" name="to_date_search" id="to_date_search" required="" />
 				        <div class="input-group-btn">
 				          <button class="btn btn-primary" name="date_search" type="submit">
 				            <span class="glyphicon glyphicon-search"></span>
@@ -43,10 +55,18 @@
 				    </div>
 				  <!-- </div> -->
 				</form>
-
 	        </div>
 
 
 </div>
+				@if ($errors->any())
+					    <div>
+					        <ul style="list-style: none;">
+					            @foreach ($errors->all() as $error)
+					                <li class="alert alert-danger">{{ $error }}</li>
+					            @endforeach
+					        </ul>
+					    </div>
+					@endif
 
 	    <hr />
