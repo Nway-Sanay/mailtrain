@@ -1860,18 +1860,17 @@ __webpack_require__.r(__webpack_exports__);
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
-      }).then(function (response) {
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error.response);
-
-        if (error.response.status == '401') {// this.$router.push('/login')
-          //retdirect login page
-        } else if (error.resquest) {
-          console.log(error.request);
-        } // console.log('hay')
-
-      });
+      }).then(function (response) {// console.log(response)
+      }); // .catch(error=>{
+      //   console.log(error.response)
+      //     if(error.response.status == '401'){
+      //       this.$router.push('/login')
+      //       //retdirect login page
+      //     }else if(error.resquest){
+      //         console.log(error.request)
+      //     }
+      //     // console.log('hay')
+      // });
     }
   },
   mounted: function mounted() {
@@ -2006,15 +2005,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    axios.get('/api/logout', {
+    axios.post('/api/logout', {
       headers: {
-        'content-type': 'application/json',
-        accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
       }
-    });
+    }); // .then(response => {
+    //
+    //     console.log(response)
+    // }).catch(error=>{
+    //   console.log(error)
+    // });
+
     localStorage.removeItem('access_token');
-    this.$router.push('/');
+    this.$router.push('login');
   }
 });
 
@@ -34149,6 +34154,61 @@ var app = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/axios_intercept.js":
+/*!*****************************************!*\
+  !*** ./resources/js/axios_intercept.js ***!
+  \*****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+axios.interceptors.response.use(function (response) {
+  // Do something with response data
+  if (_typeof(response.data) != 'object') {
+    console.log('url error');
+  } else {
+    console.log(response.data);
+  } // console.log(response.data)
+
+
+  return response;
+}, // Do something with response error
+function (error) {
+  if (error.response.status == 401) {
+    _routes__WEBPACK_IMPORTED_MODULE_0__["default"].push('login');
+    console.log('Unauthorized User');
+  } // if (error.response.status === 405) {
+  //   console.log('not post');
+  //
+  // }
+  // console.log(error.response)
+
+
+  return Promise.reject(error);
+}); // request interceptor
+
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  var token = localStorage.getItem('access_token');
+
+  if (token != null) {
+    console.log(token);
+  }
+
+  return config;
+}, function (error) {
+  // Do something with request error
+  console.log('axios_intercept_request_error' + error.response.data);
+  return Promise.reject(error);
+});
+
+/***/ }),
+
 /***/ "./resources/js/bootstrap.js":
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
@@ -34174,10 +34234,12 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 
 window.Vue = vue__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('default-layout', __webpack_require__(/*! ./views/default-component */ "./resources/js/views/default-component.vue").default);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('no-nav', __webpack_require__(/*! ./views/nonav */ "./resources/js/views/nonav.vue").default);
-window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a; // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+__webpack_require__(/*! ./axios_intercept */ "./resources/js/axios_intercept.js"); // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that

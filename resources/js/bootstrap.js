@@ -14,13 +14,13 @@ window._ = require('lodash');
  import VueRouter from 'vue-router';
 
  window.Vue = Vue;
+ window.axios = axios;
 
  Vue.use(VueRouter);
  Vue.component('default-layout',require('./views/default-component').default)
  Vue.component('no-nav',require('./views/nonav').default)
+require('./axios_intercept')
 
-
- window.axios = axios;
 
 
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -48,7 +48,7 @@ window._ = require('lodash');
 // import Echo from 'laravel-echo'
 
 // window.Pusher = require('pusher-js');
-	
+
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
 //     key: process.env.MIX_PUSHER_APP_KEY,
