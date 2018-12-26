@@ -1,30 +1,31 @@
 <template>
 
-	<div>	
+	<div>
 
-			<component :is='layout'>
+		<component :is='layout'>
 
-            	<router-view></router-view>
+			<router-view></router-view>
 
-            </component>
+		</component>
+		
 	</div>
 
 </template>
 <script>
-    
-	
+
+
     const default_layout = "default";
 
 
 	export default{
 
 		components: {
-           
+
         },
 
 		data(){
 			return{
-				
+
 			}
 		},
 

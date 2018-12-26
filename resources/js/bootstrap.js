@@ -17,8 +17,8 @@ window._ = require('lodash');
  window.axios = axios;
 
  Vue.use(VueRouter);
- Vue.component('default-layout',require('./views/default-component').default)
- Vue.component('no-nav',require('./views/nonav').default)
+ Vue.component('default-layout',resolve => require(['./views/default-component'],resolve).default)
+ Vue.component('no-nav',resolve => require(['./views/nonav'],resolve).default)
 require('./axios_intercept')
 
 

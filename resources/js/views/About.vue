@@ -15,7 +15,41 @@
 </template>
 
 <script>
-    export default {
-      
+const CancelToken =  axios.CancelToken;
+let cancel;
+
+export default {
+  data(){
+
+    return{
+        title:"Inbox",
+        mails:''
     }
+
+  },
+
+  methods:{
+    fetchData(){
+        axios.get('/api/about',{
+
+          cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+
+          })
+
+        }).then((response) =>{
+            console.log(cancel);
+          })
+
+
+
+
+    }
+  },
+
+  mounted(){
+    this.fetchData()
+  }
+
+}
 </script>

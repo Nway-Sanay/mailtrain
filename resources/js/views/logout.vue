@@ -5,25 +5,29 @@
 <script>
     export default {
       mounted () {
+console.log(localStorage.getItem('access_token'));
+        axios.post('/api/logout').then(({data})=>{
+          localStorage.removeItem('access_token')
+          this.$router.push('login')
+        })
 
-        axios.post('/api/logout',{
-              headers: {
-                    'Content-Type':'application/json',
-                    'Accept':'application/json',
-                   'Authorization': 'Bearer '+localStorage.getItem('access_token')
-
-                 }
-            })
+        // ,{
+        //       headers: {
+        //             'Content-Type':'application/json',
+        //             'Accept':'application/json',
+        //            'Authorization': 'Bearer '+localStorage.getItem('access_token')
+        //
+        //          }
+        //     }
             // .then(response => {
             //
             //     console.log(response)
             // }).catch(error=>{
             //   console.log(error)
             // });
+              console.log('second')
 
 
-            localStorage.removeItem('access_token')
-            this.$router.push('login')
         }
     }
 </script>

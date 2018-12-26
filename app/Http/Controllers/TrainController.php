@@ -65,7 +65,7 @@ class TrainController extends Controller
                                 ['is_draft',0]
                             ])
                             ->orderBy('send_date','desc')
-                            // ->paginate(10)
+                            ->with('user')
                             ->get()
                             ;
 
@@ -194,7 +194,9 @@ class TrainController extends Controller
 
         $draft_count = $this->draft_count();
 
-        return view('layouts.mail.draft',compact('drafts','mails','mail_count','draft_count'));
+        return $drafts;
+
+        // return view('layouts.mail.draft',compact('drafts','mails','mail_count','draft_count'));
 
     }
 

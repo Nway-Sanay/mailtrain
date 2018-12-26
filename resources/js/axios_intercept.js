@@ -6,7 +6,7 @@ import router from './routes';
       // Do something with response data
 
       if (typeof response.data != 'object' ) {
-        console.log('url error');
+        console.log('Ooops! Something went wrong.');
       }else {
         console.log(response.data);
       }
@@ -44,11 +44,18 @@ import router from './routes';
 
     if (token != null) {
 
-      console.log(token)
+       // Authorization: `Bearer ${this.$store.state.token}`
+
+      // config.headers.Authorization = `Bearer ${token}`;
+      console.log(`Bearer ${localStorage.getItem('access_token')}`);
+      config.headers['Content-Type'] = 'application/json';
+      config.headers['Accept'] = 'application/json';
+       config.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+      // console.log(token)
     }
     return config;
   }, function (error) {
     // Do something with request error
-    console.log('axios_intercept_request_error'+error.response.data);
+    // console.log('axios_intercept_request_error'+error.response.data);
     return Promise.reject(error);
   });

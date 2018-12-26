@@ -22,10 +22,12 @@
 
 
 Route::post('login','Authenticate@login');
-Route::post('logout','Authenticate@logout');
 
 Route::middleware('auth:api')->group(function() {
+	Route::post('logout','Authenticate@logout');
 	Route::get('inbox','TrainController@inbox')->name('inbox');
+	Route::get('about','TrainController@draft')->name('about');
+
 
 });
 

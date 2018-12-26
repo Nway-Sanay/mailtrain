@@ -5,33 +5,33 @@ let routes =  new VueRouter({
 	mode: 'history',
 
 	routes:[
+		{
+			path:'/login',
+			component:resolve => require(['./views/login'],resolve).default,
+			meta:{
+				layout : "no-nav",
+				is_login : true
+			}
+		},
 
-	{
-		path:'/',
-		component:require('./views/Home').default,
-		meta:{requiresAuth : true}
-	},
+		{
+			path:'/',
+			component:resolve => require(['./views/Home'],resolve).default,
+			meta:{requiresAuth : true}
+		},
 
     {
         path:'/about',
-        component:require('./views/About').default,
+        component:resolve => require(['./views/About'],resolve).default,
         meta:{requiresAuth : true}
     },
-
+// require(['./pages/Login'], resolve)
     {
         path:'/logout',
-        component:require('./views/logout').default,
+        component:resolve => require(['./views/logout'],resolve).default,
         meta:{requiresAuth : true}
     },
 
-	{
-		path:'/login',
-		component:require('./views/login').default,
-		meta:{
-            layout : "no-nav",
-            is_login : true
-        }
-	}
 
 ]})
 
@@ -46,7 +46,8 @@ routes.beforeEach((to, from, next) => {
         }else{
         	next()
         }
-	}else if (to.matched.some(record => record.meta.requiresAuth)) {
+	}
+	else if (to.matched.some(record => record.meta.requiresAuth)) {
         if (localStorage.getItem('access_token') != null) {
             next({
                 path: '/',
