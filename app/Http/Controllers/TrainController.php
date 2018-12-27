@@ -56,7 +56,7 @@ class TrainController extends Controller
     public function inbox()
     {
 
-        $user_id = auth()->id();
+        // $user_id = auth()->id();
 
         $email = auth()->user()->email;
 
@@ -243,38 +243,84 @@ class TrainController extends Controller
     // Search
     public function search(Request $request)
     {
-        if ($request->has('date_search')) {
-
-            $this->validate(request(),[
-            'from_date_search' => 'required',
-            'to_date_search' => 'required'
-            ]);
-
-             $searches = MailList::whereBetween('send_date',
-                                    [$request->from_date_search,
-                                    $request->to_date_search])
-                          ->get();
-
-            // $date =  \Carbon\Carbon::parse($request->search);'like', '%'.$request->search.'%'
-
-            // $from_date = \Carbon\Carbon::parse($request->from_date_search);
-            // $to_date = \Carbon\Carbon::parse($request->to_date_search);
-
-            // dd($searches);
-
-            return view('layouts.mail.search',compact('searches'));
-
-        }
+        // if ($request->has('date_search')) {
+        //
+        //     $this->validate(request(),[
+        //     'from_date_search' => 'required',
+        //     'to_date_search' => 'required'
+        //     ]);
+        //
+        //      $searches = MailList::whereBetween('send_date',
+        //                             [$request->from_date_search,
+        //                             $request->to_date_search])
+        //                   ->get();
+        //
+        //     // $date =  \Carbon\Carbon::parse($request->search);'like', '%'.$request->search.'%'
+        //
+        //     // $from_date = \Carbon\Carbon::parse($request->from_date_search);
+        //     // $to_date = \Carbon\Carbon::parse($request->to_date_search);
+        //
+        //     // dd($searches);
+        //
+        //     return view('layouts.mail.search',compact('searches'));
+        //
+        // }
         // textbox search
-        if ($request->has('search')) {
+        // if ($request->has('search')) {
+        //
+        //     $searches = MailList::where('to_email','like', '%'.$request->text_search.'%')
+        //                     ->orWhere('body','like', '%'.$request->text_search.'%')
+        //                   ->get();
+        //
+        //     return view('layouts.mail.search',compact('searches'));
+        //
+        // }
 
-            $searches = MailList::where('to_email','like', '%'.$request->text_search.'%')
-                            ->orWhere('body','like', '%'.$request->text_search.'%')
-                          ->get();
+        // if ($search = $request->query('query')) {
+        //   // code...
+        //   $searches = MailList::where('to_email','like', '%'.$search.'%')
+        //   ->orWhere('body','like', '%'.$search.'%')
+        //   ->get();
+        // }
 
-            return view('layouts.mail.search',compact('searches'));
+        $user_id = auth()->id();
 
+        $email = auth()->user()->email;
+
+        $search = $request->get('q');
+
+        if ($search) {
+          // code...
+          $mails = MailList::
+          where('to_email','like', '%'.$search.'%')
+          ->orWhere([
+            ['body','like', '%'.$search.'%'],
+          ])
+          ->where(function ($query)
+          {
+
+            $email = auth()->user()->email;
+
+            $user_id = auth()->id();
+
+            $query ->where('to_email',$email)->orWhere('user_id',$user_id);
+          })
+          ->with('user')
+          ->get();
+
+          return $mails;
         }
+
+        $mails = MailList::where([
+                                ['to_email',$email],
+                                ['is_draft',0]
+                            ])
+                            ->orderBy('send_date','desc')
+                            ->with('user')
+                            ->get()
+                            ;
+
+        return $mails;
 
     }
 

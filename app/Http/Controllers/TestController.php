@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\MailList;
 class TestController extends Controller
 {
     public function test(Request $request){
-      	$user =	User::create($request->all());
-		return response()->json($user);
+
+      $email = $request->email;
+
+      $mails = MailList::UserMail($email)
+                          ->get();
+
+      	return response()->json($mails);
     }
 }

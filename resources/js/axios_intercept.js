@@ -7,9 +7,10 @@ import router from './routes';
 
       if (typeof response.data != 'object' ) {
         console.log('Ooops! Something went wrong.');
-      }else {
-        console.log(response.data);
       }
+      // else {
+      //   console.log(response.data);
+      // }
 
       // console.log(response.data)
       return response;
@@ -47,7 +48,7 @@ import router from './routes';
        // Authorization: `Bearer ${this.$store.state.token}`
 
       // config.headers.Authorization = `Bearer ${token}`;
-      console.log(`Bearer ${localStorage.getItem('access_token')}`);
+      // console.log(`Bearer ${localStorage.getItem('access_token')}`);
       config.headers['Content-Type'] = 'application/json';
       config.headers['Accept'] = 'application/json';
        config.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;

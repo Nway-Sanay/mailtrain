@@ -27,8 +27,9 @@ Route::middleware('auth:api')->group(function() {
 	Route::post('logout','Authenticate@logout');
 	Route::get('inbox','TrainController@inbox')->name('inbox');
 	Route::get('about','TrainController@draft')->name('about');
-
+	Route::get('search','TrainController@search')->name('search');
 
 });
 
 Route::get('/','TrainController@index')->name('home');
+Route::post('test','TestController@test')->name('test');

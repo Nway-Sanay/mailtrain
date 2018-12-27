@@ -15,4 +15,12 @@ class MailList extends Model
 		return $this->belongsTo(User::class);
 	}
 
+	public function scopeUserMail($query,$email)
+	{
+			return $query->whereHas('user',
+															function ($query) use ($email) {
+																$query->where('email',$email);
+															});
+	}
+
 }

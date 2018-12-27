@@ -20,6 +20,13 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'password','is_activate'
     ];
 
+    public function mail_list()
+    {
+      return $this->hasMany(MailList::class);
+    }
+
+    
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -41,5 +48,5 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    
+
 }

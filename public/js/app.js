@@ -33547,9 +33547,10 @@ axios.interceptors.response.use(function (response) {
   // Do something with response data
   if (_typeof(response.data) != 'object') {
     console.log('Ooops! Something went wrong.');
-  } else {
-    console.log(response.data);
-  } // console.log(response.data)
+  } // else {
+  //   console.log(response.data);
+  // }
+  // console.log(response.data)
 
 
   return response;
@@ -33575,7 +33576,7 @@ axios.interceptors.request.use(function (config) {
   if (token != null) {
     // Authorization: `Bearer ${this.$store.state.token}`
     // config.headers.Authorization = `Bearer ${token}`;
-    console.log("Bearer ".concat(localStorage.getItem('access_token')));
+    // console.log(`Bearer ${localStorage.getItem('access_token')}`);
     config.headers['Content-Type'] = 'application/json';
     config.headers['Accept'] = 'application/json';
     config.headers['Authorization'] = "Bearer ".concat(localStorage.getItem('access_token')); // console.log(token)
@@ -33613,12 +33614,13 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 
 
+ // import _ from 'lodash'
 
 window.Vue = vue__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('default-layout', function (resolve) {
-  return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/default-component */ "./resources/js/views/default-component.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+  return __webpack_require__.e(/*! AMD require */ 0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/default-component */ "./resources/js/views/default-component.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
 });
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('no-nav', function (resolve) {
   return __webpack_require__.e(/*! AMD require */ 5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/nonav */ "./resources/js/views/nonav.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
@@ -33670,7 +33672,7 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: [{
     path: '/login',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/login */ "./resources/js/views/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/login */ "./resources/js/views/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       layout: "no-nav",
@@ -33679,7 +33681,7 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: '/',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Home */ "./resources/js/views/Home.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Home */ "./resources/js/views/Home.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       requiresAuth: true
@@ -33687,7 +33689,7 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: '/about',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/About */ "./resources/js/views/About.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/About */ "./resources/js/views/About.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       requiresAuth: true
