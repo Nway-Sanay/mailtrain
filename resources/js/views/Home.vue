@@ -15,6 +15,15 @@
 
                     <div class="card-body">
 
+                      <div class="" style="float:left">
+                        <datetime format="YYYY/MM/DD" width="300px" v-model="from_date"></datetime>
+                        {{from_date}}
+                      </div>
+                      <div class="" style="float:right">
+                        <datetime format="YYYY/MM/DD" width="300px" v-model="to_date" ></datetime>
+                        {{to_date}}
+                      </div>
+                      <button class="form-control btn btn-outline-success" @click= "date_search">Search</button>
 
                         <table class="table">
                           <thead>
@@ -25,7 +34,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="mail,index in mails">
+                            <tr v-for="mail,index in mails.data">
                               <td>{{mail.to_email}}</td>
                               <td>
                                 <router-link class="nav-link" to='/about'>
@@ -39,10 +48,10 @@
                             </tr>
                           </tbody>
                         </table>
-
-
-
-                    </div>
+                      </div>
+                      <div class="card-footer">
+                        <pagination :data="mails" :show-disabled="true" :limit='1' @pagination-change-page="getResults"></pagination>
+                      </div>
                 </div>
             </div>
         </div>
@@ -51,21 +60,50 @@
 
 <script>
 
+    import datetime from 'vuejs-datetimepicker';
+
     const CancelToken =  axios.CancelToken;
     let cancel;
 
     export default {
+
+      components: { datetime },
+
       data(){
 
         return{
             title:"Inbox",
-            mails:'',
-            search:''
+            mails:{},
+            search:'',
+            from_date:'',
+            to_date:''
         }
 
       },
 
       methods:{
+
+        getResults(page = 1) {
+          let api = ''
+
+          if (this.search) {
+            api = 'api/search?q='+this.search+'&page='
+
+            axios.get(api + page)
+      				.then(response => {
+      					this.mails = response.data;
+                console.log(response.data.path+" "+this.$route.toPath);
+      				});
+          }else {
+
+            axios.get('api/inbox?page=' + page)
+            .then(response => {
+              this.mails = response.data;
+              console.log(response.data.path+" "+this.$route.toPath);
+            });
+          }
+      		},
+
         fetchData(){
             axios.get('/api/inbox')
             .then((response) =>{
@@ -84,7 +122,18 @@
                   console.log(response.data);
                 })
             console.log(query);
-          }, 1200)
+          }, 1200),
+
+          date_search(){
+            axios.post('/api/date_search',{
+              from_date : this.from_date,
+              to_date : this.to_date
+            }).then((response) =>{
+                  this.mails = response.data;
+                  console.log(response.data);
+              })
+            console.log(this.from_date+" "+this.to_date);
+          }
 
       },
 

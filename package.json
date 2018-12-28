@@ -28,7 +28,9 @@
     },
     "dependencies": {
         "@websanova/vue-auth": "^2.21.14-beta",
+        "laravel-vue-pagination": "^2.2.0",
         "node-sass": "^4.11.0",
-        "vue-template-loader": "^1.0.0"
+        "vue-template-loader": "^1.0.0",
+        "vuejs-datetimepicker": "^1.1.9"
     }
 }

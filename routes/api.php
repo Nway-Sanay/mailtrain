@@ -28,8 +28,10 @@ Route::middleware('auth:api')->group(function() {
 	Route::get('inbox','TrainController@inbox')->name('inbox');
 	Route::get('about','TrainController@draft')->name('about');
 	Route::get('search','TrainController@search')->name('search');
+	Route::post('date_search','TrainController@date_search')->name('date_search');
 
 });
 
 Route::get('/','TrainController@index')->name('home');
 Route::post('test','TestController@test')->name('test');
+Route::post('desc','TestController@desc')->name('desc');

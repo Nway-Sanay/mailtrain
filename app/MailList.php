@@ -15,8 +15,19 @@ class MailList extends Model
 		return $this->belongsTo(User::class);
 	}
 
+	protected $appends = ['from_email'];
+
+	public function getFromEmailAttribute()
+	{
+
+	    return $this->user->email;
+
+	}
+
 	public function scopeUserMail($query,$email)
 	{
+
+
 			return $query->whereHas('user',
 															function ($query) use ($email) {
 																$query->where('email',$email);

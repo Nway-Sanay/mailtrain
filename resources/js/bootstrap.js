@@ -22,7 +22,7 @@ window._ = require('lodash');
  Vue.component('default-layout',resolve => require(['./views/default-component'],resolve).default)
  Vue.component('no-nav',resolve => require(['./views/nonav'],resolve).default)
 require('./axios_intercept')
-
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 
 
