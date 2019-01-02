@@ -30,6 +30,12 @@ Route::middleware('auth:api')->group(function() {
 	Route::get('search','TrainController@search')->name('search');
 	Route::post('date_search','TrainController@date_search')->name('date_search');
 
+	Route::get('user',function ()
+	{
+		return \Auth::user()->email;
+	})->name('date_search');
+
+
 });
 
 Route::get('/','TrainController@index')->name('home');

@@ -17,6 +17,9 @@
 	      <li class="nav-item">
     		 <router-link class="nav-link" to='/logout'>Logout</router-link>
 	      </li>
+				<li class="nav-item">
+    		 <span class="nav-link">{{user_name}}</span>
+	      </li>
 	    </ul>
 	  </div>
 	</nav>
@@ -27,14 +30,28 @@
 	export default{
 		data(){
 
-			return{}
+			return{
+				user_name:''
+			}
 
 		},
 
 		methods:{
 
+			getUserName(){
 
+				axios.get('/api/user')
+				.then((response) => {
+					this.user_name = response.data
+					console.log(response.data);
+				})
 
+			}
+
+		},
+
+		mounted(){
+			this.getUserName()
 		}
 
 
