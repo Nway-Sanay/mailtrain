@@ -26,7 +26,7 @@ Route::post('login','Authenticate@login');
 Route::middleware('auth:api')->group(function() {
 	Route::post('logout','Authenticate@logout');
 	Route::get('inbox','TrainController@inbox')->name('inbox');
-	Route::get('about','TrainController@draft')->name('about');
+	Route::post('compose','TrainController@compose')->name('compose');
 	Route::get('search','TrainController@search')->name('search');
 	Route::post('date_search','TrainController@date_search')->name('date_search');
 

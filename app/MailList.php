@@ -15,19 +15,32 @@ class MailList extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	protected $appends = ['from_email'];
+	// attribute appending
+
+	protected $appends = ['from_email','body_cut'];
 
 	public function getFromEmailAttribute()
 	{
+		if ($this->user_id) {
 
-	    return $this->user->email;
+			return $this->user->email;
+		}else{
+			return 'no id';
+		}
 
 	}
 
+	public function getBodyCutAttribute()
+	{
+		$body_cut = str_limit($this->body, 7);
+
+		return $body_cut;
+	}
+
+	// search with user_email scope
+
 	public function scopeUserMail($query,$email)
 	{
-
-
 			return $query->whereHas('user',
 															function ($query) use ($email) {
 																$query->where('email',$email);

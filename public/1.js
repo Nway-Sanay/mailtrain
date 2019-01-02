@@ -152,8 +152,8 @@ var render = function() {
               [
                 _c(
                   "router-link",
-                  { staticClass: "nav-link", attrs: { to: "/about" } },
-                  [_vm._v("About")]
+                  { staticClass: "nav-link", attrs: { to: "/compose" } },
+                  [_vm._v("Compose")]
                 )
               ],
               1

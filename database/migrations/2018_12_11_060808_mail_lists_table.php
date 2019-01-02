@@ -12,7 +12,7 @@ class MailListsTable extends Migration
      * @return void
      */
     public function up()
-    {        
+    {
         Schema::create('mail_lists', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('send_date');
@@ -21,7 +21,7 @@ class MailListsTable extends Migration
             $table->boolean('is_read')->default(0);
             $table->boolean('is_spam')->default(0);
             $table->boolean('is_draft')->default(0);
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             // ->onDelete('set null');
         });
@@ -34,7 +34,7 @@ class MailListsTable extends Migration
      */
     public function down()
     {
-      
+
         // Schema::rename($maillists,$mail_lists);
 
         Schema::dropIfExists('mail_lists');

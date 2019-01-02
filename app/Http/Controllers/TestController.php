@@ -11,10 +11,19 @@ class TestController extends Controller
 
       $email = $request->email;
 
+      \DB::enableQueryLog();
+
+
+
       $mails = MailList::UserMail($email)
+                          ->with(['user'=>function($query){
+                                            $query->select('id','email');
+                                          }])
+                          ->select(['send_date','to_email','body','id','user_id'])
                           ->get();
 
-      	return response()->json($mails);
+      	// return response()->json($mails);
+        dd(\DB::getQueryLog());
     }
 
     public function desc(Request $request)
@@ -27,17 +36,21 @@ class TestController extends Controller
       //           ->get()
       //           ;
 
-      $mails = MailList::with(['user'=>function($query){
-                        $query->select('id','email');
-                      }])
-                        ->select(['send_date','to_email','body','id','user_id'])
-                        ->get()
-                        ;
+      \DB::enableQueryLog();
+
+      $mails = MailList::select(['send_date','to_email','body','id','user_id'])
+                        ->with(['user'=>function($query){
+                            $query->select('id','email');
+                          }])
+                        // ->toSql()
+                        ->get();
 
       // $mails = MailList::find(1);
 
       // return $mails->fromemail;
 
-      return response()->json($mails);
+      return response()->json(['data'=>$mails],200);
+
+      // dd(\DB::getQueryLog());
     }
 }

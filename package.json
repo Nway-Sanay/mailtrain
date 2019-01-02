@@ -23,13 +23,15 @@
         "vue": "^2.5.17",
         "vue-loader": "^15.4.2",
         "vue-router": "^3.0.2",
-        "webpack": "^4.27.1",
+        "webpack": "^4.28.3",
         "webpack-cli": "^3.1.2"
     },
     "dependencies": {
         "@websanova/vue-auth": "^2.21.14-beta",
         "laravel-vue-pagination": "^2.2.0",
+        "moment": "^2.23.0",
         "node-sass": "^4.11.0",
+        "vee-validate": "^2.1.4",
         "vue-template-loader": "^1.0.0",
         "vuejs-datetimepicker": "^1.1.9"
     }

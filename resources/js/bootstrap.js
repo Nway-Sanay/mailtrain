@@ -13,12 +13,17 @@ window._ = require('lodash');
 
  import VueRouter from 'vue-router';
 
+ import VeeValidate from 'vee-validate'
+
+
  // import _ from 'lodash'
 
  window.Vue = Vue;
  window.axios = axios;
 
  Vue.use(VueRouter);
+Vue.use(VeeValidate);
+
  Vue.component('default-layout',resolve => require(['./views/default-component'],resolve).default)
  Vue.component('no-nav',resolve => require(['./views/nonav'],resolve).default)
 require('./axios_intercept')

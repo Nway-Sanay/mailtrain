@@ -17,34 +17,33 @@
 
                       <div class="" style="float:left">
                         <datetime format="YYYY/MM/DD" width="300px" v-model="from_date"></datetime>
-                        {{from_date}}
+
                       </div>
                       <div class="" style="float:right">
                         <datetime format="YYYY/MM/DD" width="300px" v-model="to_date" ></datetime>
-                        {{to_date}}
+
                       </div>
                       <button class="form-control btn btn-outline-success" @click= "date_search">Search</button>
 
                         <table class="table">
                           <thead>
                             <tr>
-                              <th>To</th>
                               <th>From</th>
                               <th>Body</th>
+                              <th>user_id</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="mail,index in mails.data">
-                              <td>{{mail.to_email}}</td>
                               <td>
                                 <router-link class="nav-link" to='/about'>
-                                  {{mail.user.email}}
+                                  {{mail.from_email}}
                                 </router-link>
                               </td>
-                              <td>{{mail.body}}</td>
+                              <td>{{mail.body_cut}}</td>
                               <td>{{mail.user_id}}</td>
                               <td>{{mail.is_read?'':'Unread'}}</td>
-                              <td>{{mail.send_date}}</td>
+                              <td>{{moment(mail.send_date).fromNow()}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -60,6 +59,8 @@
 
 <script>
 
+    var moment = require('moment');
+
     import datetime from 'vuejs-datetimepicker';
 
     const CancelToken =  axios.CancelToken;
@@ -72,6 +73,7 @@
       data(){
 
         return{
+            moment:moment,
             title:"Inbox",
             mails:{},
             search:'',
@@ -83,13 +85,15 @@
 
       methods:{
 
+
+
         getResults(page = 1) {
           let api = ''
 
           if (this.search) {
             api = 'api/search?q='+this.search+'&page='
 
-            axios.get(api + page)
+            axios.get(api)
       				.then(response => {
       					this.mails = response.data;
                 console.log(response.data.path+" "+this.$route.toPath);

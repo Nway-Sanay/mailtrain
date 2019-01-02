@@ -21,8 +21,8 @@ let routes =  new VueRouter({
 		},
 
     {
-        path:'/about',
-        component:resolve => require(['./views/About'],resolve).default,
+        path:'/compose',
+        component:resolve => require(['./views/Compose'],resolve).default,
         meta:{requiresAuth : true}
     },
 // require(['./pages/Login'], resolve)
