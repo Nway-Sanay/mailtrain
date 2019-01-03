@@ -16,12 +16,10 @@
                     <div class="card-body">
 
                       <div class="" style="float:left">
-                        <datetime format="YYYY/MM/DD" width="300px" v-model="from_date"></datetime>
-
+                        <datetime format="YYYY/MM/DD" width="200px" v-model="from_date"></datetime>
                       </div>
                       <div class="" style="float:right">
-                        <datetime format="YYYY/MM/DD" width="300px" v-model="to_date" ></datetime>
-
+                        <datetime format="YYYY/MM/DD" width="200px" v-model="to_date" ></datetime>
                       </div>
                       <button class="form-control btn btn-outline-success" @click= "date_search">Search</button>
 
@@ -34,11 +32,11 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="mail,index in mails.data">
+                            <tr style="cursor: pointer" @click='detail(mail.id)' v-for="mail,index in mails.data">
                               <td>
-                                <router-link class="nav-link" to='/about'>
+                                <!-- <router-link class="nav-link" to='/detail'> -->
                                   {{mail.from_email}}
-                                </router-link>
+                                <!-- </router-link> -->
                               </td>
                               <td>{{mail.body_cut}}</td>
                               <td>{{mail.user_id}}</td>
@@ -63,8 +61,7 @@
 
     import datetime from 'vuejs-datetimepicker';
 
-    const CancelToken =  axios.CancelToken;
-    let cancel;
+    import {bus} from '../app'
 
     export default {
 
@@ -78,7 +75,8 @@
             mails:{},
             search:'',
             from_date:'',
-            to_date:''
+            to_date:'',
+            id:''
         }
 
       },
@@ -137,6 +135,13 @@
                   console.log(response.data);
               })
             console.log(this.from_date+" "+this.to_date);
+          },
+
+          detail(id){
+            this.mail = id
+            this.$router.push('detail')
+            bus.$emit('detail',this.mail)
+            // console.log(id);
           }
 
       },

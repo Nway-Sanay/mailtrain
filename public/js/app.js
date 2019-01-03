@@ -43566,17 +43566,19 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no exports provided */
+/*! exports provided: bus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bus", function() { return bus; });
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./resources/js/App.vue");
 
 
 
+var bus = new Vue();
 var app = new Vue({
   el: '#app',
   router: _routes__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -43683,7 +43685,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('default-layout', function 
   return __webpack_require__.e(/*! AMD require */ 1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/default-component */ "./resources/js/views/default-component.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
 });
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('no-nav', function (resolve) {
-  return __webpack_require__.e(/*! AMD require */ 6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/nonav */ "./resources/js/views/nonav.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+  return __webpack_require__.e(/*! AMD require */ 7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/nonav */ "./resources/js/views/nonav.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
 });
 
 __webpack_require__(/*! ./axios_intercept */ "./resources/js/axios_intercept.js");
@@ -43734,7 +43736,7 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: [{
     path: '/login',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/login */ "./resources/js/views/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/login */ "./resources/js/views/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       layout: "no-nav",
@@ -43743,7 +43745,7 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: '/',
     component: function component(resolve) {
-      return Promise.all(/*! AMD require */[__webpack_require__.e(0), __webpack_require__.e(3)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Home */ "./resources/js/views/Home.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return Promise.all(/*! AMD require */[__webpack_require__.e(0), __webpack_require__.e(2)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Home */ "./resources/js/views/Home.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       requiresAuth: true
@@ -43751,16 +43753,23 @@ var routes = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: '/compose',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Compose */ "./resources/js/views/Compose.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Compose */ "./resources/js/views/Compose.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       requiresAuth: true
     }
-  }, // require(['./pages/Login'], resolve)
-  {
+  }, {
+    path: '/detail',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/Detail */ "./resources/js/views/Detail.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+    },
+    meta: {
+      requiresAuth: true
+    }
+  }, {
     path: '/logout',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/logout */ "./resources/js/views/logout.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
+      return __webpack_require__.e(/*! AMD require */ 6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./views/logout */ "./resources/js/views/logout.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe).default;
     },
     meta: {
       requiresAuth: true

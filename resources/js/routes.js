@@ -25,7 +25,13 @@ let routes =  new VueRouter({
         component:resolve => require(['./views/Compose'],resolve).default,
         meta:{requiresAuth : true}
     },
-// require(['./pages/Login'], resolve)
+
+		{
+        path:'/detail',
+        component:resolve => require(['./views/Detail'],resolve).default,
+        meta:{requiresAuth : true}
+    },
+
     {
         path:'/logout',
         component:resolve => require(['./views/logout'],resolve).default,

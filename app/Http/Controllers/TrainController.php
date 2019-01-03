@@ -92,12 +92,12 @@ class TrainController extends Controller
 
     public function compose(Request $request)
     {
-        // $to_email = $request->get('email');
-        // $body = $request->get('body');
-        // $send_date = \Carbon\Carbon::now()->toDateTimeString();
-        // $user_id = auth()->id();
-        //
-        // $sender_mail = auth()->user()->email;
+        $to_email = $request->get('email');
+        $body = $request->get('body');
+        $send_date = \Carbon\Carbon::now()->toDateTimeString();
+        $user_id = auth()->id();
+
+        $sender_mail = auth()->user()->email;
         //
         // //save as a draft
         //
@@ -114,69 +114,72 @@ class TrainController extends Controller
         //     return redirect()->to('/mail/draft');
         // }
         //
-        // //send mail
-        //
-        // $this->validate(request(),[
-        //     'email' => 'required|email|exists:users',
-        //     'body' => 'required',
-        //     'attach_file' => 'nullable|mimes:pdf|max:10000'
-        // ]);
-        //
-        // if ($request->has('save')) {
-        //
-        //     // send from a draft
-        //     if ($request->id) {
-        //         $draft = MailList::where('id',$request->id)->update([
-        //                                             'send_date' => $send_date,
-        //                                             'to_email' => $to_email,
-        //                                             'body' => $body,
-        //                                             'user_id' => $user_id,
-        //                                             'is_draft'=> 0,
-        //                                             ]);
-        //
-        //     }
-        //
-        //
-        //     $file_name_to_store=null;
-        //
-        //     if ($request->hasFile('attach_file')) {
-        //
-        //         $file_name_with_ext = $request->file('attach_file')->getClientOriginalName();
-        //
-        //         $file_name = pathinfo($file_name_with_ext,PATHINFO_FILENAME);
-        //
-        //         $file_ext =  $request->file('attach_file')->getClientOriginalExtension();
-        //
-        //         $file_name_to_store = $file_name."_".time().".".$file_ext;
-        //
-        //         $path = $request->file('attach_file')->storeAs('public/attach_files',$file_name_to_store);
-        //
-        //     }
-        //
-        //     $mail_list = MailList::create([
-        //                     'send_date' => $send_date,
-        //                     'to_email' => $to_email,
-        //                     'body' => $body,
-        //                     'user_id' => $user_id,
-        //                     'file_name' => $file_name_to_store,
-        //                 ]);
-        //
-        //
-        //     $content = [
-        //         'sender_mail' => $sender_mail,
-        //         'attach_file' => $file_name_to_store,
-        //         'to_email' => $to_email,
-        //         'body' => $body
-        //     ];
-        //
-        //     Mail::to($to_email)->send(new TestMail($content));
-        //
-        //     return redirect()->to('/mail/inbox');
-        //
-        // }
+        //send mail
 
-        return $request;
+        $this->validate(request(),[
+            'email' => 'required|email|exists:users',
+            'body' => 'required',
+            'attach_file' => 'nullable|mimes:pdf|max:10000'
+        ]);
+
+
+
+            // send from a draft
+            // if ($request->id) {
+            //     $draft = MailList::where('id',$request->id)->update([
+            //                                         'send_date' => $send_date,
+            //                                         'to_email' => $to_email,
+            //                                         'body' => $body,
+            //                                         'user_id' => $user_id,
+            //                                         'is_draft'=> 0,
+            //                                         ]);
+            //
+            // }
+
+
+            $file_name_to_store = null;
+
+            if ($request->hasFile('attach_file')) {
+
+                $file_name_with_ext = $request->file('attach_file')->getClientOriginalName();
+
+                $file_name = pathinfo($file_name_with_ext,PATHINFO_FILENAME);
+
+                $file_ext =  $request->file('attach_file')->getClientOriginalExtension();
+
+                $file_name_to_store = $file_name."_".time().".".$file_ext;
+
+                $path = $request->file('attach_file')->storeAs('test/',$file_name_to_store);
+
+            }
+
+            $mail_list = MailList::create([
+                            'send_date' => $send_date,
+                            'to_email' => $to_email,
+                            'body' => $body,
+                            'user_id' => $user_id,
+                            'file_name' => $file_name_to_store,
+                        ]);
+
+
+            // $content = [
+            //     'sender_mail' => $sender_mail,
+            //     'attach_file' => $file_name_to_store,
+            //     'to_email' => $to_email,
+            //     'body' => $body
+            // ];
+            //
+            // Mail::to($to_email)->send(new TestMail($content));
+
+            // return redirect()->to('/mail/inbox');
+
+            // return $file_name_to_store;
+
+            return response()->json(['success' => true, 'message' => 'Mail has been successfully created.'], 201);
+
+
     }
+
 
     public function draft(Request $request)
     {

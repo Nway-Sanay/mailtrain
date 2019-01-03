@@ -5,7 +5,7 @@
 <script>
     export default {
       mounted () {
-console.log(localStorage.getItem('access_token'));
+        console.log(localStorage.getItem('access_token'));
         axios.post('/api/logout').then(({data})=>{
           localStorage.removeItem('access_token')
           this.$router.push('login')
