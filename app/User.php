@@ -25,7 +25,31 @@ class User extends Authenticatable implements JWTSubject
       return $this->hasMany(MailList::class);
     }
 
-    
+    public function locations()
+    {
+      // code...
+      return $this->belongsToMany(Location::class)->withPivot('cities');
+    }
+
+
+    protected $appends = ['cities'];
+    //
+  	public function getCitiesAttribute()
+  	{
+
+    // $user = User::find(1)->locations()->orderBy('city')->get();
+    // $user = User::find(1);
+    //
+    foreach ($this->locations as $loca) {
+      // code...
+      $cities[] = $loca->pivot->cities;
+    }
+
+    return $cities;
+
+      // return $location;
+
+  	}
 
     /**
      * The attributes that should be hidden for arrays.
@@ -48,5 +72,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
 
 }

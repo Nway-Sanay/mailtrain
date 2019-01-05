@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\MailList;
+use App\Location;
+
 class TestController extends Controller
 {
     public function test(Request $request){
@@ -52,5 +54,25 @@ class TestController extends Controller
       return response()->json(['data'=>$mails],200);
 
       // dd(\DB::getQueryLog());
+    }
+
+    public function manyTest()
+    {
+      $user = User::find(2);
+      $user->locations()->attach(2);
+      return $user;
+    }
+
+    public function withLocation()
+    {
+      // $user = User::find(1)->locations()->orderBy('city')->get();
+
+      $user = User::find(1);
+
+      // foreach ($user->location as $loca) {
+      //   $city[] = $loca->city;
+      // }
+      // return $city;
+      return $user;
     }
 }

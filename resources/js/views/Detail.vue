@@ -3,10 +3,17 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header">Compose</div>
+                    <div class="card-header">Detail</div>
 
                     <div class="card-body">
-                      Detail {{id}}
+                      From: {{mail.from_email}}
+                      <br>
+                      To: {{mail.to_email}}
+                      <br>
+                      {{moment(mail.send_date).fromNow()}}
+                      <br>
+                      Body: {{mail.body}}
+                      <br>
                     </div>
                 </div>
             </div>
@@ -16,32 +23,38 @@
 
 <script>
 
-import {bus} from '../app'
+var moment = require('moment');
 
 export default {
+  props:['id'],
   data(){
 
     return{
-      id:''
+      moment:moment,
+      mail:''
     }
 
   },
 
   methods:{
 
-
+    fetchData(){
+      axios.post('/api/detail',{id:this.id})
+      .then(response => {
+        this.mail = response.data;
+        console.log(this.mail);
+      });
+      console.log(this.id);
+    }
 
   },
 
   created(){
-    bus.$on('detail',(mail)=>{
 
-      console.log('D'+mail);
-    })
   },
 
   mounted(){
-    // this.fetchData()
+    this.fetchData()
   }
 
 }

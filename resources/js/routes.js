@@ -27,8 +27,10 @@ let routes =  new VueRouter({
     },
 
 		{
-        path:'/detail',
+        path:'/detail/:id',
+				name:'mail.detail',
         component:resolve => require(['./views/Detail'],resolve).default,
+				props:true,
         meta:{requiresAuth : true}
     },
 

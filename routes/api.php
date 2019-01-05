@@ -29,7 +29,9 @@ Route::middleware('auth:api')->group(function() {
 	Route::post('compose','TrainController@compose')->name('compose');
 	Route::get('search','TrainController@search')->name('search');
 	Route::post('date_search','TrainController@date_search')->name('date_search');
+	Route::post('detail','TrainController@detail')->name('detail');
 
+	// to show current log in user
 	Route::get('user',function ()
 	{
 		return \Auth::user()->email;
@@ -41,3 +43,6 @@ Route::middleware('auth:api')->group(function() {
 Route::get('/','TrainController@index')->name('home');
 Route::post('test','TestController@test')->name('test');
 Route::post('desc','TestController@desc')->name('desc');
+
+Route::get('manytest','TestController@manyTest')->name('manyTest');
+Route::get('withLocation','TestController@withLocation')->name('withLocation');

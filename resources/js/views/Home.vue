@@ -138,8 +138,8 @@
           },
 
           detail(id){
-            this.mail = id
-            this.$router.push('detail')
+            
+            this.$router.push({name:'mail.detail', params: { id:id }})
             bus.$emit('detail',this.mail)
             // console.log(id);
           }

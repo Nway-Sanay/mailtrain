@@ -206,16 +206,18 @@ class TrainController extends Controller
 
     }
 
-    public function detail($id)
+    public function detail(Request $request)
     {
-        $mail = MailList::where('id',$id)->first();
+        $mail = MailList::where('id',$request->id)->first();
 
-        if($mail->is_read == 0){
-            $mail->is_read = 1;
-            $mail->save();
-        }
+        // if($mail->is_read == 0){
+        //     $mail->is_read = 1;
+        //     $mail->save();
+        // }
 
-        return view('layouts.mail.detail',compact('mail'));
+        // return view('layouts.mail.detail',compact('mail'));
+
+        return $mail;
     }
 
     public function draft_detail($id)
@@ -337,6 +339,7 @@ class TrainController extends Controller
       // }
 
       // if ($request->from_date == $request->to_date) {
+
         $searches = MailList::whereDate('send_date','>=',
                                    $request->from_date)
                               ->whereDate('send_date','<=',
@@ -443,22 +446,22 @@ class TrainController extends Controller
         // dd('make');
     }
 
-    public function get_image($image)
-    {
-
-        $path = storage_path().'/app/images/'.$image;
-
-        if(!File::exists($path)){
-            abort(404);
-        }
-
-        $file = File::get($path);
-        $type = File::mimeType($path);
-
-        $response = Response::make($file,200);
-        $response -> header("Content-Type" , 200);
-        return $response;
-    }
+    // public function get_image($image)
+    // {
+    //
+    //     $path = storage_path().'/app/images/'.$image;
+    //
+    //     if(!File::exists($path)){
+    //         abort(404);
+    //     }
+    //
+    //     $file = File::get($path);
+    //     $type = File::mimeType($path);
+    //
+    //     $response = Response::make($file,200);
+    //     $response -> header("Content-Type" , 200);
+    //     return $response;
+    // }
 
 
 }
