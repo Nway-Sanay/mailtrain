@@ -13,7 +13,7 @@ class TestController extends Controller
 
       $email = $request->email;
 
-      \DB::enableQueryLog();
+      // \DB::enableQueryLog();
 
 
 
@@ -24,8 +24,8 @@ class TestController extends Controller
                           ->select(['send_date','to_email','body','id','user_id'])
                           ->get();
 
-      	// return response()->json($mails);
-        dd(\DB::getQueryLog());
+      	return response()->json($mails);
+        // dd(\DB::getQueryLog());
     }
 
     public function desc(Request $request)
@@ -38,7 +38,7 @@ class TestController extends Controller
       //           ->get()
       //           ;
 
-      \DB::enableQueryLog();
+      // \DB::enableQueryLog();
 
       $mails = MailList::select(['send_date','to_email','body','id','user_id'])
                         ->with(['user'=>function($query){
@@ -63,16 +63,21 @@ class TestController extends Controller
       return $user;
     }
 
-    public function withLocation()
+    // retreive user using location_name
+    public function withUser(Location $location)
     {
-      // $user = User::find(1)->locations()->orderBy('city')->get();
 
-      $user = User::find(1);
+        $user = $location->users;
+        return response()->json($user);
+        // return $user->pluck('city','email');
 
-      // foreach ($user->location as $loca) {
-      //   $city[] = $loca->city;
-      // }
-      // return $city;
-      return $user;
+    }
+
+    // retreive user using user_name along with the location
+    public function withLocation(User $user)
+    {
+      return response()->json($user);
+      // dd($user);
+      // return $user->city;
     }
 }

@@ -38,7 +38,6 @@ class MailList extends Model
 	}
 
 	// search with user_email scope
-
 	public function scopeUserMail($query,$email)
 	{
 			return $query->whereHas('user',

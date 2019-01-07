@@ -13,7 +13,12 @@ class Location extends Model
 
     public function Users()
     {
-      // code...
       return $this->belongsToMany('App\User');
+    }
+
+    // Route Model Binding Customizing The Key Name
+    public function getRouteKeyname()
+    {
+      return 'city';
     }
 }

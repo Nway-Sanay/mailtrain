@@ -45,4 +45,5 @@ Route::post('test','TestController@test')->name('test');
 Route::post('desc','TestController@desc')->name('desc');
 
 Route::get('manytest','TestController@manyTest')->name('manyTest');
-Route::get('withLocation','TestController@withLocation')->name('withLocation');
+Route::get('withUser/{location}','TestController@withUser')->name('withUser');
+Route::get('withLocation/{user}','TestController@withLocation')->name('withLocation');

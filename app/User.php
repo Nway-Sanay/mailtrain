@@ -27,29 +27,32 @@ class User extends Authenticatable implements JWTSubject
 
     public function locations()
     {
-      // code...
-      return $this->belongsToMany(Location::class)->withPivot('cities');
+      return $this->belongsToMany(Location::class);
     }
 
 
-    protected $appends = ['cities'];
-    //
-  	public function getCitiesAttribute()
+    protected $appends = ['city'];
+
+  	public function getCityAttribute()
   	{
 
-    // $user = User::find(1)->locations()->orderBy('city')->get();
-    // $user = User::find(1);
-    //
-    foreach ($this->locations as $loca) {
-      // code...
-      $cities[] = $loca->pivot->cities;
-    }
+        foreach ($this->locations as $loca) {
 
-    return $cities;
+          $cities[] = $loca->city;
+        }
 
-      // return $location;
+        $city = implode(',', $cities);
+
+        return $city;
+
 
   	}
+
+    // Route Model Binding Customizing The Key Name
+    public function getRouteKeyname()
+    {
+      return 'email';
+    }
 
     /**
      * The attributes that should be hidden for arrays.

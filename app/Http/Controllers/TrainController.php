@@ -271,12 +271,13 @@ class TrainController extends Controller
 
                                   $user_id = auth()->id();
 
-                                  $query ->where('to_email',$email)->orWhere('user_id',$user_id);
+                                  $query ->where('to_email',$email);
                                 })
                             ->with('user')
                             ->paginate(5)
                             // ->get()
                             ;
+
 
                             return $mails;
                           }
@@ -349,9 +350,9 @@ class TrainController extends Controller
 
                                      $email = auth()->user()->email;
 
-                                     $user_id = auth()->id();
+                                     // $user_id = auth()->id();
 
-                                     $query ->where('to_email',$email)->orWhere('user_id',$user_id);
+                                     $query ->where('to_email',$email);
                                    })
                               ->with('user')
                               ->paginate('5')
