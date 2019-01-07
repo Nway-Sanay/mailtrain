@@ -36,14 +36,19 @@ class User extends Authenticatable implements JWTSubject
   	public function getCityAttribute()
   	{
 
-        foreach ($this->locations as $loca) {
+        $hasCity = $this->locations()->exists();
 
-          $cities[] = $loca->city;
+        if ($hasCity) {
+
+          foreach ($this->locations as $loca) {
+            $cities[] = $loca->city;
+          }
+
+          $city = implode(',', $cities);
+
+          return $city;
         }
 
-        $city = implode(',', $cities);
-
-        return $city;
 
 
   	}
